@@ -96,7 +96,7 @@ class AppController
   end
 end
 
-# ##################    2 - show user properties  #############################
+# ####################  2 - show user properties  #############################
 
 def show_user_properties
   if @user.nil?

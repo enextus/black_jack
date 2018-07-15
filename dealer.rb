@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
 # class User
-class Diller
-
+class Dealer
   attr_reader :name
   attr_accessor :cards, :bank
 
-  def initialize(name = 'Diller')
+  def initialize(name = 'Dealer')
     @name = name
     @bank = 100
     @cards = []
   end
-
-
-
   # methods
 end

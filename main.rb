@@ -1,28 +1,25 @@
 # frozen_string_literal: true
 
-LINE = ''
+# initialize constants
 CLEAR = `clear`.freeze
 BORDERLINE = '_' * 50
 BORDERWAVE = '~' * 25
+LINE = ''
 
-require_relative 'accessors'
+# a require of while required files
+require_relative 'interface'
 require_relative 'validation'
 require_relative 'game_bank'
 require_relative 'cards'
 require_relative 'user'
-require_relative 'diller'
-require_relative 'app_controller'
+require_relative 'dealer'
+require_relative 'controller'
 
-app_controller = AppController.new
+# a class Interface object is created here
+interface = Interface.new
 
-puts CLEAR
-puts 'Here is the blackjack software.'
-puts LINE
+# a class Controller object is created here
+controller = Controller.new(interface)
 
-loop do
-  app_controller.show_actions
-  choice = gets.chomp.downcase
-  break if choice == 'exit'
-  puts CLEAR
-  app_controller.action(choice)
-end
+# game start
+controller.main_loop

@@ -12,30 +12,17 @@ class Controller
     @cards = Cards.new
   end
 
-###############################################################################
-
   def main_loop
-    @interface.welcome_message
+    @interface.clear_display
+    @interface.message_welcome
+    @interface.drawing_on_new_line
     loop do
-      self.show_actions
+      @interface.show_actions
       choice = gets.chomp.downcase
       break if choice == 'exit'
-      puts CLEAR
-      self.action(choice)
+      @interface.clear_display
+      action(choice)
     end
-  end
-
-  def show_actions
-    messages = ['Select the action by entering a number from the list: ',
-                '  1 - Create user & dealer.',
-                '  2 - Show user properties.',
-                '  3 - Show dealer properties.',
-                '  4 - Show whole cards.',
-                '  5 - Start game.',
-                BORDERLINE.to_s,
-                'To exit the menu, type: exit',
-                BORDERLINE.to_s]
-    messages.each { |action| puts action }
   end
 
   def action(choice)
@@ -51,39 +38,29 @@ class Controller
     when '5'
       start_game
     else
-      puts 'Re-enter!'
+      @interface.message_re_enter
     end
-    puts BORDERLINE
+    @interface.drawing_on_borderline
   end
 
   private
 
-  # #######################  1 - user create & dealer  ########################
+  # #######################  1 - create user && dealer  #######################
 
   def create_users
     if @user.nil?
       create_users!
     else
-      message_user_exists
+      @interface.message_user_exists(@user)
     end
-  end
-
-  def message_user_exists
-    puts "User '#{@user.name}' already exist. Only one user allowed!"
-  end
-
-  def message_create_user
-    @message = 'Enter the user name with format (latin [a-z\d]+): '
   end
 
   # creating user && dealer
   def create_users!
-    message_create_user
-    user = nil
-    dealer = nil
+    user, dealer = nil
 
     loop do
-      print @message
+      @interface.message_create_user
       name = gets.chomp
 
       user = User.new(name)
@@ -95,88 +72,41 @@ class Controller
       break
     end
   rescue StandardError => exception
-    error_message(exception)
+    @interface.error_message(exception)
     retry
   else
-    message_user_created(user.name)
+    @interface.message_user_created(user.name)
   end
 
-  def error_message(exception)
-    puts exception.message
-  end
-
-  def message_user_created(name)
-    puts "\nUser with the name: «#{name}» & «dealer» were successfully created!"
-  end
-
-
-# ####################  2 - show user properties  #############################
+  # ####################  2 - show gamers properties  #########################
 
   def show_user_properties
     if @user.nil?
-      user_void
+      @interface.user_void
     else
-      show_user_properties!
+      @interface.show_user_properties!(@user, @cards)
     end
   end
-
-  def user_void
-    puts 'No user exist. Please create one first!'
-  end
-
-  def show_user_properties!
-    puts "User name: #{@user.name}"
-    puts "User bank amount: $ #{@user.bank}"
-
-    return if @user.cards.empty?
-    puts 'User cards:'
-    puts LINE
-    @cards.puts_cards_symbols(@user.cards)
-    puts "User score is now: #{@cards.score_calculate(@user.cards)}"
-  end
-
-  # ##################  3 - show dealer properties  #############################
 
   def show_dealer_properties
     if @dealer.nil?
-      dealer_void
+      @interface.dealer_void
     else
-      show_dealer_properties!
+      @interface.show_dealer_properties!(@dealer, @cards, 1)
     end
   end
 
-  def dealer_void
-    puts 'No dealer exist. Please create one first!'
-  end
-
-  def show_dealer_properties!(show = 0)
-    puts "Dealer name: #{@dealer.name}"
-    puts "Dealer bank amount: $ #{@dealer.bank}"
-
-    return if @dealer.cards.empty?
-    puts 'Dealer cards:'
-    puts LINE
-    case show
-    when 1
-      @cards.puts_cards_symbols(@dealer.cards)
-      puts "Dealer score is now: #{@cards.score_calculate(@dealer.cards)}"
-    else
-      puts '* *'
-      puts 'Actual dealer score: **'
-    end
-  end
-
-  # ###########################  4 -  cards  ####################################
+  # ###########################  4 -  cards  ##################################
 
   def show_all_cards
     @cards.show_all_cards
   end
 
-  # ##########################   5 - run game ###################################
+  # ##########################   5 - run game #################################
 
   def start_game
     if @user.nil?
-      user_void
+      @interface.user_void
     else
       first_init
       start_game!
@@ -186,36 +116,32 @@ class Controller
   def first_init
     @game_bank = GameBank.new
 
-    user_getting_cards
-    dealer_getting_cards
+    gamer_getting_cards(@user)
+    gamer_getting_cards(@dealer)
 
-    make_a_user_bet
-    make_a_dealer_bet
+    make_a_bet(@user)
+    make_a_bet(@dealer)
     make_a_game_bank_pay
   end
 
   def start_game!
-    puts CLEAR
-  puts "1. HERE"
+    @interface.clear_display
     loop do
-      show_a_game_bank_amount
-      puts BORDERWAVE
-      show_user_properties!
-      puts BORDERWAVE
-      show_dealer_properties!(1)
-      puts BORDERWAVE
-
-      # return check_user_lost? || check_user_win?
-
-      print 'Would you like to (s)kip, '
-      print '(a)dd a card'  if @user.cards.size < 3
-      puts ' or (o)pen the cards?'
+      @interface.show_a_game_bank_amount(@game_bank)
+      @interface.drawing_on_borderwave
+      show_user_properties
+      @interface.drawing_on_borderwave
+      show_dealer_properties
+      @interface.drawing_on_borderwave
+      @interface.message_skip_move
+      @interface.message_add_card if @user.cards.size < 3
+      @interface.message_open_the_cards
 
       answer = gets.downcase.strip
 
       case answer
       when 's'
-        dealer_step
+        dealer_move_on
         break
       when 'a'
         user_add_card
@@ -228,7 +154,7 @@ class Controller
     end
   end
 
-  def dealer_step
+  def dealer_move_on
     if @cards.score_calculate(@dealer.cards) >= 17
       start_game!
     elsif @cards.score_calculate(@dealer.cards) < 17
@@ -243,32 +169,23 @@ class Controller
 
     if dealer_koeffizient == user_koeffizient
       getting_prize
-      puts "nobody has won!"
+      @interface.message_nobody_has_won
     elsif dealer_koeffizient < user_koeffizient
       getting_prize(@dealer)
-      puts "#{@dealer.name} has won!"
+      @interface.message_somebody_has_won(@dealer)
     elsif dealer_koeffizient > user_koeffizient
       getting_prize(@user)
-      puts "#{@user.name} has won!"
+      @interface.message_somebody_has_won(@user)
     end
 
-    show_user_properties!
-    show_dealer_properties!(1)
-  end
-
-  def message_user_win
-    puts 'User win!'
-  end
-
-  def message_dealer_win
-    puts 'Dealer win!'
+    show_user_properties
+    show_dealer_properties
   end
 
   def getting_prize(player = nil)
     if player.nil?
       @win_prize = @game_bank.amount / 2
       @user.bank, @dealer.bank = @win_prize, @win_prize
-
     else
       player.bank += @game_bank.amount
       @game_bank.amount = 0
@@ -276,37 +193,33 @@ class Controller
   end
 
   def ask_play_again
-    message_play_again
+    @interface.message_play_again
     replay = gets.downcase.strip
     start_game! if replay == 'y'
-  end
-
-  def message_play_again
-    puts 'Would you like to play again? (y/n)'
   end
 
   def user_add_card
     arr = @cards.getting_whole_deck
     card = arr[rand(arr.size)]
     @user.cards << card
-    puts BORDERWAVE
+    @interface.drawing_on_borderwave
     puts 'You drew the card: '
-    puts LINE
+    @interface.drawing_on_new_line
     @cards.puts_card_symbol(card)
-    puts LINE
-    puts LINE
+    @interface.drawing_on_new_line
+    @interface.drawing_on_new_line
   end
 
   def dealer_add_card
     arr = @cards.getting_whole_deck
     card = arr[rand(arr.size)]
     @dealer.cards << card
-    puts BORDERWAVE
+    @interface.drawing_on_borderwave
     puts 'You drew the card: '
-    puts LINE
+    @interface.drawing_on_new_line
     @cards.puts_card_symbol(card)
-    puts LINE
-    puts LINE
+    @interface.drawing_on_new_line
+    @interface.drawing_on_new_line
   end
 
   def check_user_win?
@@ -325,39 +238,23 @@ class Controller
     puts 'Bust! You lose. Game over!'
   end
 
-  def user_getting_cards
-    @user.cards = getting_cards
-  end
-
-  def dealer_getting_cards
-    @dealer.cards = getting_cards
+  def gamer_getting_cards(gamer)
+    gamer.cards = getting_cards
   end
 
   def getting_cards
     @cards.random_cards
   end
 
-  def make_a_user_bet
-    if @game_bank.check_amount?(@user.bank)
-      @user.bank = @user.bank - @game_bank.pay
+  def make_a_bet(gamer)
+    if @game_bank.check_amount?(gamer.bank)
+      gamer.bank = gamer.bank - @game_bank.pay
     else
-      puts 'no money'
-    end
-  end
-
-  def make_a_dealer_bet
-    if @game_bank.check_amount?(@dealer.bank)
-      @dealer.bank = @dealer.bank - @game_bank.pay
-    else
-      puts 'no money'
+      @interface.message_no_money
     end
   end
 
   def make_a_game_bank_pay
     @game_bank.amount += @game_bank.pay * 2
-  end
-
-  def show_a_game_bank_amount
-    puts "Game bank amount: $ #{@game_bank.amount}"
   end
 end

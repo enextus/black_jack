@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# black jack game software | a school project
+# main file
 # initialize constants
 CLEAR = `clear`.freeze
 BORDERLINE = '_' * 50

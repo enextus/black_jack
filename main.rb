@@ -6,7 +6,7 @@ BORDERLINE = '_' * 50
 BORDERWAVE = '~' * 25
 LINE = ''
 
-# a require of while required files
+# require of while required files
 require_relative 'interface'
 require_relative 'validation'
 require_relative 'game_bank'

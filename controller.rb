@@ -15,8 +15,8 @@ class Controller
 ###############################################################################
 
   def main_loop
+    @interface.welcome_message
     loop do
-      p "#{self}"
       self.show_actions
       choice = gets.chomp.downcase
       break if choice == 'exit'

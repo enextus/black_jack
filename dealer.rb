@@ -10,5 +10,4 @@ class Dealer
     @bank = 100
     @cards = []
   end
-  # methods
 end

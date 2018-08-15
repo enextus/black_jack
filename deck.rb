@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # module Cards
-class Cards
-  attr_reader :score_weight
+class Deck
+  attr_reader :score_weight, :whole_deck
 
   def initialize
     @deck_count = 2 # user get 2 cards
@@ -13,35 +13,27 @@ class Cards
     @score_weight = 0
   end
 
-  def full_deck
+  def whole_deck
     deck = @spades + @hearts + @diamonds + @clubs
     deck.shuffle
   end
 
   def getting_whole_deck
-    @full_deck = @spades + @hearts + @diamonds + @clubs
+    @whole_deck = @spades + @hearts + @diamonds + @clubs
   end
 
   def random_cards
-    @random_cards = full_deck.sample(@deck_count)
+    @random_cards = @whole_deck.sample(@deck_count)
   end
 
   def random_cards_print
-    @random_cards = full_deck.sample(@deck_count).each do |card|
+    @random_cards = whole_deck.sample(@deck_count).each do |card|
       print [card.hex].pack('U*') + ', '
     end
   end
 
-  def show_all_cards
-    puts_cards_symbols(@spades)
-    puts_cards_symbols(@hearts)
-    puts_cards_symbols(@diamonds)
-    puts_cards_symbols(@clubs)
-  end
-
   def puts_cards_symbols(line)
     line.each { |card| print [card.hex].pack('U*') + ', ' }
-    new_line
   end
 
   def puts_card_symbol(card)
@@ -65,17 +57,5 @@ class Cards
       @c_new[index] = mapping(value[4..4])
     end
     @c_new.sum
-  end
-
-  def new_line
-    puts "\n \n"
-  end
-
-  def new_half_line
-    puts "\n"
-  end
-
-  def do_line
-    puts BORDERLINE
   end
 end

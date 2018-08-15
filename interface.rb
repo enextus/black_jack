@@ -7,8 +7,7 @@ class Interface
                 '  1 - Create user & dealer.',
                 '  2 - Show user properties.',
                 '  3 - Show dealer properties.',
-                '  4 - Show whole cards.',
-                '  5 - Start game.',
+                '  4 - Start game.',
                 BORDERLINE.to_s,
                 'To exit the menu, type: exit',
                 BORDERLINE.to_s]

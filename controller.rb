@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# class Controller ...
+# class Controller
 class Controller
   attr_reader :interface, :user, :dealer
 
@@ -108,10 +108,6 @@ class Controller
   end
 
   # ##########################   4 - run game #################################
-<<<<<<< HEAD
-=======
-
->>>>>>> 2fa3fce53bd2d896138a742fb46148ae079d3993
   def start_game
     if @user.nil?
       @interface.user_void

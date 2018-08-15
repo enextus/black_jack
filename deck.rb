@@ -2,7 +2,7 @@
 
 # module Deck
 class Deck
-  attr_reader :score_weight, :whole_deck
+  attr_reader :score_weight
 
   def initialize
     @deck_count = 2 # user get 2 cards

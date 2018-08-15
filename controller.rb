@@ -83,14 +83,6 @@ class Controller
     end
   end
 
-  def show_gamer_properties(gamer, deck)
-    if gamer.nil?
-      @interface.user_void
-    else
-      @interface.show_user_properties!(gamer, deck)
-    end
-  end
-
   def show_user_properties
     if @user.nil?
       @interface.user_void

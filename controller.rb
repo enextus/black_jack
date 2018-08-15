@@ -16,6 +16,7 @@ class Controller
     @interface.clear_display
     @interface.message_welcome
     @interface.drawing_on_new_line
+
     loop do
       @interface.show_actions
       choice = gets.chomp.downcase
@@ -38,6 +39,7 @@ class Controller
     else
       @interface.message_re_enter
     end
+
     @interface.drawing_on_borderline
   end
 
@@ -53,7 +55,8 @@ class Controller
   end
 
   def create_users!
-    user, dealer = nil
+    user = nil
+    dealer = nil
 
     loop do
       @interface.message_create_user

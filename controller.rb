@@ -44,7 +44,6 @@ class Controller
   private
 
   # #######################  1 - create user && dealer  #######################
-
   def create_users
     if @user.nil?
       create_users!
@@ -76,7 +75,6 @@ class Controller
   end
 
   # ####################  2 - show gamers properties  #########################
-
   def show_gamer_properties(gamer, deck)
     if gamer.nil?
       @interface.user_void
@@ -102,7 +100,6 @@ class Controller
   end
 
   # ##########################   4 - run game #################################
-
   def start_game
     if @user.nil?
       @interface.user_void

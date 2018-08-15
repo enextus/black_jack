@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# module Cards
+# module Deck
 class Deck
   attr_reader :score_weight, :whole_deck
 

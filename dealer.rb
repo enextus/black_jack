@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# class User
+# class Dealer
 class Dealer
   attr_reader :name
   attr_accessor :cards, :bank

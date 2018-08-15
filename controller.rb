@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# class Controller ...
+# class Controller
 class Controller
   attr_reader :interface, :user, :dealer
 

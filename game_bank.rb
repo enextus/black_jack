@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# class User
+# class GameBank
 class GameBank
   attr_accessor :amount
 

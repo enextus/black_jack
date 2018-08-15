@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# class Controller
+# class Controller ...
 class Controller
   attr_reader :interface, :user, :dealer
 
@@ -9,7 +9,7 @@ class Controller
     @user = nil
     @dealer = nil
     @game_bank = nil
-    @cards = Cards.new
+    @deck = Deck.new
   end
 
   def main_loop
@@ -30,12 +30,10 @@ class Controller
     when '1'
       create_users
     when '2'
-      show_user_properties
+      show_gamer_properties(@user, @deck)
     when '3'
       show_dealer_properties
     when '4'
-      show_all_cards
-    when '5'
       start_game
     else
       @interface.message_re_enter
@@ -55,7 +53,6 @@ class Controller
     end
   end
 
-  # creating user && dealer
   def create_users!
     user, dealer = nil
 
@@ -80,11 +77,19 @@ class Controller
 
   # ####################  2 - show gamers properties  #########################
 
+  def show_gamer_properties(gamer, deck)
+    if gamer.nil?
+      @interface.user_void
+    else
+      @interface.show_user_properties!(gamer, deck)
+    end
+  end
+
   def show_user_properties
     if @user.nil?
       @interface.user_void
     else
-      @interface.show_user_properties!(@user, @cards)
+      @interface.show_user_properties!(@user, @deck)
     end
   end
 
@@ -92,17 +97,11 @@ class Controller
     if @dealer.nil?
       @interface.dealer_void
     else
-      @interface.show_dealer_properties!(@dealer, @cards, 1)
+      @interface.show_dealer_properties!(@dealer, @deck, 1)
     end
   end
 
-  # ###########################  4 -  cards  ##################################
-
-  def show_all_cards
-    @cards.show_all_cards
-  end
-
-  # ##########################   5 - run game #################################
+  # ##########################   4 - run game #################################
 
   def start_game
     if @user.nil?
@@ -155,17 +154,17 @@ class Controller
   end
 
   def dealer_move_on
-    if @cards.score_calculate(@dealer.cards) >= 17
+    if @deck.score_calculate(@dealer.cards) >= 17
       start_game!
-    elsif @cards.score_calculate(@dealer.cards) < 17
+    elsif @deck.score_calculate(@dealer.cards) < 17
       dealer_add_card
       start_game!
     end
   end
 
   def open_cards
-    dealer_koeffizient = 21 - @cards.score_calculate(@dealer.cards)
-    user_koeffizient = 21 - @cards.score_calculate(@user.cards)
+    dealer_koeffizient = 21 - @deck.score_calculate(@dealer.cards)
+    user_koeffizient = 21 - @deck.score_calculate(@user.cards)
 
     if dealer_koeffizient == user_koeffizient
       getting_prize
@@ -199,35 +198,35 @@ class Controller
   end
 
   def user_add_card
-    arr = @cards.getting_whole_deck
+    arr = @deck.getting_whole_deck
     card = arr[rand(arr.size)]
     @user.cards << card
     @interface.drawing_on_borderwave
     puts 'You drew the card: '
     @interface.drawing_on_new_line
-    @cards.puts_card_symbol(card)
+    @deck.puts_card_symbol(card)
     @interface.drawing_on_new_line
     @interface.drawing_on_new_line
   end
 
   def dealer_add_card
-    arr = @cards.getting_whole_deck
+    arr = @deck.getting_whole_deck
     card = arr[rand(arr.size)]
     @dealer.cards << card
     @interface.drawing_on_borderwave
     puts 'You drew the card: '
     @interface.drawing_on_new_line
-    @cards.puts_card_symbol(card)
+    @deck.puts_card_symbol(card)
     @interface.drawing_on_new_line
     @interface.drawing_on_new_line
   end
 
   def check_user_win?
-    @cards.score_calculate(@user.cards) == 21
+    @deck.score_calculate(@user.cards) == 21
   end
 
   def check_user_lost?
-    @cards.score_calculate(@user.cards) > 21
+    @deck.score_calculate(@user.cards) > 21
   end
 
   def message_game_win
@@ -243,7 +242,7 @@ class Controller
   end
 
   def getting_cards
-    @cards.random_cards
+    @deck.random_cards
   end
 
   def make_a_bet(gamer)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# class Controller
+# class Controller ...
 class Controller
   attr_reader :interface, :user, :dealer
 
@@ -83,6 +83,14 @@ class Controller
     end
   end
 
+  def show_gamer_properties(gamer, deck)
+    if gamer.nil?
+      @interface.user_void
+    else
+      @interface.show_user_properties!(gamer, deck)
+    end
+  end
+
   def show_user_properties
     if @user.nil?
       @interface.user_void
@@ -100,6 +108,10 @@ class Controller
   end
 
   # ##########################   4 - run game #################################
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2fa3fce53bd2d896138a742fb46148ae079d3993
   def start_game
     if @user.nil?
       @interface.user_void

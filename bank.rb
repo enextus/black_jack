@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# class GameBank
-class GameBank
+# class Bank
+class Bank
   attr_accessor :amount
 
   def initialize

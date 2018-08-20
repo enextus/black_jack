@@ -35,7 +35,7 @@ class Deck
     line.each { |card| print [card.hex].pack('U*') + ', ' }
   end
 
-  def puts_card_symbol(card)
+  def draw_card_symbol(card)
     print [card.hex].pack('U*') + ', '
   end
 

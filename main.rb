@@ -11,7 +11,7 @@ LINE = ''
 # require all required files
 require_relative 'interface'
 require_relative 'validation'
-require_relative 'game_bank'
+require_relative 'bank'
 require_relative 'deck'
 require_relative 'user'
 require_relative 'dealer'

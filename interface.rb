@@ -38,6 +38,10 @@ class Interface
     puts 'User win!'
   end
 
+  def mesage_you_drew_the_card
+    puts 'You drew the card: '
+  end
+
   def message_dealer_win
     puts 'Dealer win!'
   end
@@ -111,7 +115,7 @@ class Interface
   end
 
   def show_a_game_bank_amount(game_bank)
-    puts "Game bank amount: $ #{game_bank.amount}"
+    puts "Bank amount: $ #{game_bank.amount}"
   end
 
   def message_nobody_has_won

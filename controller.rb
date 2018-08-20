@@ -8,7 +8,7 @@ class Controller
     @interface = interface
     @user = nil
     @dealer = nil
-    @game_bank = nil
+    @bank = nil
     @deck = Deck.new
   end
 
@@ -113,7 +113,7 @@ class Controller
   end
 
   def first_init
-    @game_bank = GameBank.new
+    @bank = Bank.new
 
     gamer_getting_cards(@user)
     gamer_getting_cards(@dealer)
@@ -126,7 +126,7 @@ class Controller
   def start_game!
     @interface.clear_display
     loop do
-      @interface.show_a_game_bank_amount(@game_bank)
+      @interface.show_a_game_bank_amount(@bank)
       @interface.drawing_on_borderwave
       show_user_properties
       @interface.drawing_on_borderwave
@@ -183,11 +183,11 @@ class Controller
 
   def getting_prize(player = nil)
     if player.nil?
-      @win_prize = @game_bank.amount / 2
+      @win_prize = @bank.amount / 2
       @user.bank, @dealer.bank = @win_prize, @win_prize
     else
-      player.bank += @game_bank.amount
-      @game_bank.amount = 0
+      player.bank += @bank.amount
+      @bank.amount = 0
     end
   end
 
@@ -202,9 +202,9 @@ class Controller
     card = arr[rand(arr.size)]
     @user.cards << card
     @interface.drawing_on_borderwave
-    puts 'You drew the card: '
+    @interface.mesage_you_drew_the_card
     @interface.drawing_on_new_line
-    @deck.puts_card_symbol(card)
+    @deck.draw_card_symbol(card)
     @interface.drawing_on_new_line
     @interface.drawing_on_new_line
   end
@@ -214,9 +214,9 @@ class Controller
     card = arr[rand(arr.size)]
     @dealer.cards << card
     @interface.drawing_on_borderwave
-    puts 'You drew the card: '
+    @interface.mesage_you_drew_the_card
     @interface.drawing_on_new_line
-    @deck.puts_card_symbol(card)
+    @deck.draw_card_symbol(card)
     @interface.drawing_on_new_line
     @interface.drawing_on_new_line
   end
@@ -229,14 +229,6 @@ class Controller
     @deck.score_calculate(@user.cards) > 21
   end
 
-  def message_game_win
-    puts 'YES! You win!'
-  end
-
-  def message_game_over
-    puts 'Bust! You lose. Game over!'
-  end
-
   def gamer_getting_cards(gamer)
     gamer.cards = getting_cards
   end
@@ -246,14 +238,14 @@ class Controller
   end
 
   def make_a_bet(gamer)
-    if @game_bank.check_amount?(gamer.bank)
-      gamer.bank = gamer.bank - @game_bank.pay
+    if @bank.check_amount?(gamer.bank)
+      gamer.bank = gamer.bank - @bank.pay
     else
       @interface.message_no_money
     end
   end
 
   def make_a_game_bank_pay
-    @game_bank.amount += @game_bank.pay * 2
+    @bank.amount += @bank.pay * 2
   end
 end

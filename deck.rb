@@ -4,7 +4,8 @@
 class Deck
   attr_reader :score_weight
 
-  def initialize
+  def initialize(interface)
+    @interface = interface
     @deck_count = 2
     @spades =   %w[1F0A1 1F0A2 1F0A3 1F0A4 1F0A5 1F0A6 1F0A7 1F0A8 1F0A9 1F0AA 1F0AB 1F0AD 1F0AE]
     @hearts =   %w[1F0B1 1F0B2 1F0B3 1F0B4 1F0B5 1F0B6 1F0B7 1F0B8 1F0B9 1F0BA 1F0BB 1F0BD 1F0BE]
@@ -27,16 +28,16 @@ class Deck
 
   def random_cards_print
     @random_cards = whole_deck.sample(@deck_count).each do |card|
-      print [card.hex].pack('U*') + ', '
+      @interface.display_card(card)
     end
   end
 
-  def puts_cards_symbols(line)
-    line.each { |card| print [card.hex].pack('U*') + ', ' }
+  def draw_cards_symbols(line)
+    line.each { |card| @interface.display_card(card) }
   end
 
   def draw_card_symbol(card)
-    print [card.hex].pack('U*') + ', '
+    @interface.display_card(card)
   end
 
   def mapping(value)

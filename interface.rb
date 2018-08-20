@@ -14,6 +14,26 @@ class Interface
     messages.each { |action| puts action }
   end
 
+  def getting_choice
+    gets.chomp.downcase
+  end
+
+  def getting_name
+    gets.chomp
+  end
+
+  def getting_replay
+    gets.downcase.strip
+  end
+
+  def getting_answer
+    gets.downcase.strip
+  end
+
+  def display_card(card)
+    print [card.hex].pack('U*') + ', '
+  end
+
   def message_welcome
     puts 'Here is the blackjack software.'
   end
@@ -89,7 +109,7 @@ class Interface
     return if user.cards.empty?
     puts 'User cards:'
     drawing_on_new_line
-    cards.puts_cards_symbols(user.cards)
+    cards.draw_cards_symbols(user.cards)
     puts "User score is now: #{cards.score_calculate(user.cards)}"
   end
 
@@ -102,7 +122,7 @@ class Interface
     drawing_on_new_line
     case show
     when 1
-      cards.puts_cards_symbols(dealer.cards)
+      cards.draw_cards_symbols(dealer.cards)
       puts "Dealer score is now: #{cards.score_calculate(dealer.cards)}"
     else
       puts '* *'

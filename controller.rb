@@ -9,7 +9,7 @@ class Controller
     @user = nil
     @dealer = nil
     @bank = nil
-    @deck = Deck.new
+    @deck = Deck.new(@interface)
   end
 
   def main_loop
@@ -19,7 +19,7 @@ class Controller
 
     loop do
       @interface.show_actions
-      choice = gets.chomp.downcase
+      choice = @interface.getting_choice
       break if choice == 'exit'
       @interface.clear_display
       action(choice)
@@ -60,7 +60,7 @@ class Controller
 
     loop do
       @interface.message_create_user
-      name = gets.chomp
+      name = @interface.getting_name
 
       user = User.new(name)
       dealer = Dealer.new
@@ -136,9 +136,7 @@ class Controller
       @interface.message_add_card if @user.cards.size < 3
       @interface.message_open_the_cards
 
-      answer = gets.downcase.strip
-
-      case answer
+      case @interface.getting_answer
       when 's'
         dealer_move_on
         break
@@ -193,7 +191,7 @@ class Controller
 
   def ask_play_again
     @interface.message_play_again
-    replay = gets.downcase.strip
+    replay = @interface.getting_replay
     start_game! if replay == 'y'
   end
 

@@ -181,8 +181,9 @@ class Controller
 
   def getting_prize(player = nil)
     if player.nil?
-      @win_prize = @bank.amount / 2
-      @user.bank, @dealer.bank = @win_prize, @win_prize
+      win_prize = @bank.amount / 2
+      @user.bank_up(win_prize)
+      @dealer.bank_up(win_prize)
     else
       player.bank += @bank.amount
       @bank.amount = 0
@@ -237,7 +238,8 @@ class Controller
 
   def make_a_bet(gamer)
     if @bank.check_amount?(gamer.bank)
-      gamer.bank = gamer.bank - @bank.pay
+      gamer.set_bet(@bank.pay)
+      # gamer.bank = gamer.bank - @bank.pay
     else
       @interface.message_no_money
     end

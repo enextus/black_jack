@@ -16,7 +16,7 @@ class User
     @cards = []
   end
 
-  def cards=(cards)
+  def set_cards(cards)
     @cards = cards
   end
 
@@ -24,7 +24,11 @@ class User
     @bank += amount
   end
 
-  def set_bet(amount)
+  def sub_bet(amount)
     @bank -= amount
+  end
+
+  def add_card(card)
+    @cards << card
   end
 end

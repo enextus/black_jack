@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# class Controller
-class Controller
+# class MainProgram
+class MainProgram
   attr_reader :interface, :user, :dealer
 
   def initialize(interface)
@@ -71,7 +71,7 @@ class Controller
       break
     end
   rescue StandardError => exception
-    @interface.error_message(exception)
+    @interface.message_error(exception)
     retry
   else
     @interface.message_user_created(user.name)
@@ -80,7 +80,7 @@ class Controller
   # ####################  2 - show gamers properties  #########################
   def show_gamer_properties(gamer, deck)
     if gamer.nil?
-      @interface.user_void
+      @interface.message_user_void
     else
       @interface.show_user_properties!(gamer, deck)
     end
@@ -88,7 +88,7 @@ class Controller
 
   def show_user_properties
     if @user.nil?
-      @interface.user_void
+      @interface.message_user_void
     else
       @interface.show_user_properties!(@user, @deck)
     end
@@ -96,7 +96,7 @@ class Controller
 
   def show_dealer_properties
     if @dealer.nil?
-      @interface.dealer_void
+      @interface.message_dealer_void
     else
       @interface.show_dealer_properties!(@dealer, @deck, 1)
     end
@@ -105,7 +105,7 @@ class Controller
   # ##########################   4 - run game #################################
   def start_game
     if @user.nil?
-      @interface.user_void
+      @interface.message_user_void
     else
       first_init
       start_game!
@@ -118,9 +118,10 @@ class Controller
     gamer_getting_cards(@user)
     gamer_getting_cards(@dealer)
 
-    make_a_bet(@user)
-    make_a_bet(@dealer)
-    make_a_game_bank_pay
+    @bank.make_a_bet(@user)
+    @bank.make_a_bet(@dealer)
+
+    @bank.make_a_pay_in_to_a_game_bank
   end
 
   def start_game!
@@ -141,7 +142,7 @@ class Controller
         dealer_move_on
         break
       when 'a'
-        user_add_card
+        gamer_add_card(@user)
         start_game!
         break
       when 'o'
@@ -155,7 +156,7 @@ class Controller
     if @deck.score_calculate(@dealer.cards) >= 17
       start_game!
     elsif @deck.score_calculate(@dealer.cards) < 17
-      dealer_add_card
+      gamer_add_card(@dealer)
       start_game!
     end
   end
@@ -165,13 +166,13 @@ class Controller
     user_koeffizient = 21 - @deck.score_calculate(@user.cards)
 
     if dealer_koeffizient == user_koeffizient
-      getting_prize
+      getting_bank
       @interface.message_nobody_has_won
     elsif dealer_koeffizient < user_koeffizient
-      getting_prize(@dealer)
+      getting_bank(@dealer)
       @interface.message_somebody_has_won(@dealer)
     elsif dealer_koeffizient > user_koeffizient
-      getting_prize(@user)
+      getting_bank(@user)
       @interface.message_somebody_has_won(@user)
     end
 
@@ -179,13 +180,12 @@ class Controller
     show_dealer_properties
   end
 
-  def getting_prize(player = nil)
-    if player.nil?
-      win_prize = @bank.amount / 2
-      @user.bank_up(win_prize)
-      @dealer.bank_up(win_prize)
+  def getting_bank(gamer = nil)
+    if gamer.nil?
+      @user.bank_up(@bank.setting_bank_up)
+      @dealer.bank_up(@bank.setting_bank_up)
     else
-      player.bank += @bank.amount
+      gamer.bank_up(@bank.amount)
       @bank.amount = 0
     end
   end
@@ -196,22 +196,10 @@ class Controller
     start_game! if replay == 'y'
   end
 
-  def user_add_card
+  def gamer_add_card(gamer)
     arr = @deck.getting_whole_deck
     card = arr[rand(arr.size)]
-    @user.cards << card
-    @interface.drawing_on_borderwave
-    @interface.mesage_you_drew_the_card
-    @interface.drawing_on_new_line
-    @deck.draw_card_symbol(card)
-    @interface.drawing_on_new_line
-    @interface.drawing_on_new_line
-  end
-
-  def dealer_add_card
-    arr = @deck.getting_whole_deck
-    card = arr[rand(arr.size)]
-    @dealer.cards << card
+    gamer.add_card(card)
     @interface.drawing_on_borderwave
     @interface.mesage_you_drew_the_card
     @interface.drawing_on_new_line
@@ -229,23 +217,10 @@ class Controller
   end
 
   def gamer_getting_cards(gamer)
-    gamer.cards = getting_cards
+    gamer.set_cards(getting_cards)
   end
 
   def getting_cards
     @deck.random_cards
-  end
-
-  def make_a_bet(gamer)
-    if @bank.check_amount?(gamer.bank)
-      gamer.set_bet(@bank.pay)
-      # gamer.bank = gamer.bank - @bank.pay
-    else
-      @interface.message_no_money
-    end
-  end
-
-  def make_a_game_bank_pay
-    @bank.amount += @bank.pay * 2
   end
 end

@@ -9,10 +9,16 @@ class Interface
                 '  3 - Show dealer properties.',
                 '  4 - Start game.',
                 BORDERLINE.to_s,
-                'To exit the menu, type: exit',
+                'To exit the program, type: exit',
                 BORDERLINE.to_s]
     messages.each { |action| puts action }
   end
+
+  def clear_display
+    puts CLEAR
+  end
+
+  ### getting_ ################################################################
 
   def getting_choice
     gets.chomp.downcase
@@ -30,16 +36,10 @@ class Interface
     gets.downcase.strip
   end
 
-  def display_card(card)
+  ### drawing_ ################################################################
+
+  def drawing_card(card)
     print [card.hex].pack('U*') + ', '
-  end
-
-  def message_welcome
-    puts 'Here is the blackjack software.'
-  end
-
-  def clear_display
-    puts CLEAR
   end
 
   def drawing_on_new_line
@@ -54,12 +54,18 @@ class Interface
     puts BORDERLINE
   end
 
+  ### message_ ################################################################
+
   def message_user_win
     puts 'User win!'
   end
 
   def mesage_you_drew_the_card
     puts 'You drew the card: '
+  end
+
+  def message_welcome
+    puts 'Here is the blackjack software.'
   end
 
   def message_dealer_win
@@ -90,7 +96,7 @@ class Interface
     print 'Enter the user name with format (latin [a-z\d]+): '
   end
 
-  def error_message(exception)
+  def message_error(exception)
     puts exception.message
   end
 
@@ -98,9 +104,40 @@ class Interface
     puts "\nUser with the name: «#{name}» & «dealer» were successfully created!"
   end
 
-  def user_void
+  def message_user_void
     puts 'No user exist. Please create one first!'
   end
+
+  def message_nobody_has_won
+    drawing_on_borderline
+    puts '*' * 19
+    puts '* nobody has won! *'
+    puts '*' * 19
+    drawing_on_borderline
+  end
+
+  def message_somebody_has_won(gamer)
+    drawing_on_borderline
+    drawing_on_borderline
+    puts '*' * 19
+    puts "* #{gamer.name} has won! *"
+    puts '*' * 19
+    drawing_on_borderline
+  end
+
+  def message_play_again
+    puts 'Would you like to play again? (y/n)'
+  end
+
+  def message_no_money
+    puts 'no money'
+  end
+
+  def message_dealer_void
+    puts 'No dealer exist. Please create one first!'
+  end
+
+  ### show_ ###################################################################
 
   def show_user_properties!(user, cards)
     puts "User name: #{user.name}"
@@ -130,36 +167,7 @@ class Interface
     end
   end
 
-  def dealer_void
-    puts 'No dealer exist. Please create one first!'
-  end
-
   def show_a_game_bank_amount(game_bank)
     puts "Bank amount: $ #{game_bank.amount}"
-  end
-
-  def message_nobody_has_won
-    drawing_on_borderline
-    puts '*' * 19
-    puts '* nobody has won! *'
-    puts '*' * 19
-    drawing_on_borderline
-  end
-
-  def message_somebody_has_won(somebody)
-    drawing_on_borderline
-    drawing_on_borderline
-    puts '*' * 19
-    puts "* #{somebody.name} has won! *"
-    puts '*' * 19
-    drawing_on_borderline
-  end
-
-  def message_play_again
-    puts 'Would you like to play again? (y/n)'
-  end
-
-  def message_no_money
-    puts 'no money'
   end
 end

@@ -28,16 +28,16 @@ class Deck
 
   def random_cards_print
     @random_cards = whole_deck.sample(@deck_count).each do |card|
-      @interface.display_card(card)
+      @interface.drawing_card(card)
     end
   end
 
   def draw_cards_symbols(line)
-    line.each { |card| @interface.display_card(card) }
+    line.each { |card| @interface.drawing_card(card) }
   end
 
   def draw_card_symbol(card)
-    @interface.display_card(card)
+    @interface.drawing_card(card)
   end
 
   def mapping(value)

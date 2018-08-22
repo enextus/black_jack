@@ -15,13 +15,13 @@ require_relative 'bank'
 require_relative 'deck'
 require_relative 'user'
 require_relative 'dealer'
-require_relative 'controller'
+require_relative 'mainprogram'
 
 # a class Interface object is created here
 interface = Interface.new
 
 # a class Controller object is created here
-controller = Controller.new(interface)
+mainprogram = MainProgram.new(interface)
 
 # game start
-controller.main_loop
+mainprogram.main_loop

@@ -10,15 +10,19 @@ class Dealer
     @cards = []
   end
 
-  def cards=(cards)
+  def set_cards(cards)
     @cards = cards
   end
 
-  def bank_up(win_prize)
-    @bank += win_prize
+  def add_card(card)
+    @cards << card
   end
 
-  def set_bet(amount)
+  def bank_up(amount)
+    @bank += amount
+  end
+
+  def sub_bet(amount)
     @bank -= amount
   end
 end

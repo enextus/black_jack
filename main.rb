@@ -2,11 +2,6 @@
 
 # black jack game software | a school project
 # main file
-# initialize constants
-CLEAR = `clear`.freeze
-BORDERLINE = '_' * 50
-BORDERWAVE = '~' * 25
-LINE = ''
 
 # require all required files
 require_relative 'interface'

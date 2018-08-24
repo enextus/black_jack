@@ -2,6 +2,12 @@
 
 # class Interface
 class Interface
+  # initialize constants
+  CLEAR = `clear`.freeze
+  BORDERLINE = '_' * 50
+  BORDERWAVE = '~' * 25
+  LINE = ''
+
   def show_actions
     messages = ['Select the action by entering a number from the list: ',
                 '  1 - Create user & dealer.',

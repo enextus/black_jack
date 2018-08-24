@@ -18,7 +18,7 @@ class Bank
     return true unless value.zero? || (value - BET).negative?
   end
 
-  def make_a_BET_in_to_a_game_bank
+  def make_a_bet_in_to_a_game_bank
     @amount += BET * 2
   end
 

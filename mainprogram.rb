@@ -118,7 +118,7 @@ class MainProgram
     @bank.make_a_bet(@user)
     @bank.make_a_bet(@dealer)
 
-    @bank.make_a_pay_in_to_a_game_bank
+    @bank.make_a_bet_in_to_a_game_bank
   end
 
   def start_game!
@@ -140,6 +140,7 @@ class MainProgram
         break
       when 'a'
         gamer_add_card(@user)
+        puts "check_user_lost? = #{check_user_lost?}"
         open_cards if check_user_lost?
         start_game!
         break

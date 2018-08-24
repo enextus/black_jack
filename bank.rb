@@ -2,23 +2,24 @@
 
 # class Bank
 class Bank
+  BET = 10
+
   attr_accessor :amount
 
   def initialize
     @amount = 0
-    @pay = 10
   end
 
-  def pay
-    @amount + @pay
+  def BET
+    @amount + BET
   end
 
   def check_amount?(value)
-    return true unless value.zero? || (value - @pay).negative?
+    return true unless value.zero? || (value - BET).negative?
   end
 
-  def make_a_pay_in_to_a_game_bank
-    @amount += @pay * 2
+  def make_a_BET_in_to_a_game_bank
+    @amount += BET * 2
   end
 
   def setting_bank_up
@@ -27,6 +28,6 @@ class Bank
 
   def make_a_bet(gamer)
     return unless check_amount?(gamer.bank)
-    gamer.sub_bet(@pay)
+    gamer.sub_bet(BET)
   end
 end

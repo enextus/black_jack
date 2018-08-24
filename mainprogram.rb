@@ -143,6 +143,7 @@ class MainProgram
         break
       when 'a'
         gamer_add_card(@user)
+        open_cards if check_user_lost?
         start_game!
         break
       when 'o'

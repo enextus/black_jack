@@ -6,9 +6,6 @@ class MainProgram
 
   def initialize(interface)
     @interface = interface
-    @user = nil
-    @dealer = nil
-    @bank = nil
     @deck = Deck.new(@interface)
   end
 

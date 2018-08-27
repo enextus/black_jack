@@ -126,10 +126,17 @@ class MainProgram
     loop do
       @interface.show_a_game_bank_amount(@bank)
       @interface.drawing_on_borderwave
+
       show_user_properties
       @interface.drawing_on_borderwave
+
+      open_cards if check_user_lost?
+
       show_dealer_properties
       @interface.drawing_on_borderwave
+
+      open_cards if check_dealer_lost?
+
       @interface.message_skip_move
       @interface.message_add_card if @user.cards.size < 3
       @interface.message_open_the_cards
@@ -213,6 +220,10 @@ class MainProgram
 
   def check_user_lost?
     @deck.score_calculate(@user.cards) > 21
+  end
+
+  def check_dealer_lost?
+    @deck.score_calculate(@dealer.cards) > 21
   end
 
   def gamer_getting_cards(gamer)

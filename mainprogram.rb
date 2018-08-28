@@ -122,7 +122,7 @@ class MainProgram
   end
 
   def start_game!
-    @interface.clear_display
+    #@interface.clear_display
     loop do
       @interface.show_a_game_bank_amount(@bank)
       @interface.drawing_on_borderwave
@@ -130,12 +130,23 @@ class MainProgram
       show_user_properties
       @interface.drawing_on_borderwave
 
-      open_cards if check_user_lost?
-
       show_dealer_properties
       @interface.drawing_on_borderwave
 
-      open_cards if check_dealer_lost?
+
+      open_cards if @user.cards.size == 3 && @dealer.cards.size == 3
+
+      if check_user_lost?
+        @interface.message_somebody_has_won(@dealer)
+        show_user_properties
+        show_dealer_properties
+        break
+      elsif check_dealer_lost?
+        @interface.message_somebody_has_won(@user)
+        show_user_properties
+        show_dealer_properties
+        break
+      end
 
       @interface.message_skip_move
       @interface.message_add_card if @user.cards.size < 3
@@ -147,8 +158,18 @@ class MainProgram
         break
       when 'a'
         gamer_add_card(@user)
-        puts "check_user_lost? = #{check_user_lost?}"
-        open_cards if check_user_lost?
+        if check_user_lost?
+          @interface.message_somebody_has_won(@dealer)
+          show_user_properties
+          show_dealer_properties
+          break
+        elsif check_dealer_lost?
+          @interface.message_somebody_has_won(@user)
+          show_user_properties
+          show_dealer_properties
+          break
+        end
+
         start_game!
         break
       when 'o'
@@ -159,25 +180,27 @@ class MainProgram
   end
 
   def dealer_move_on
-    if @deck.score_calculate(@dealer.cards) >= 17
-      start_game!
-    elsif @deck.score_calculate(@dealer.cards) < 17
-      gamer_add_card(@dealer)
-      start_game!
-    end
+    return start_game! if @deck.score_calculate(@dealer.cards) >= 17
+
+    gamer_add_card(@dealer) if @deck.score_calculate(@dealer.cards) < 17
+    start_game!
   end
 
   def open_cards
-    dealer_koeffizient = 21 - @deck.score_calculate(@dealer.cards)
-    user_koeffizient = 21 - @deck.score_calculate(@user.cards)
+    dealer_coefficient = 21 - @deck.score_calculate(@dealer.cards)
+    user_coefficient = 21 - @deck.score_calculate(@user.cards)
 
-    if dealer_koeffizient == user_koeffizient
+
+
+
+
+    if dealer_coefficient == user_coefficient
       getting_bank
       @interface.message_nobody_has_won
-    elsif dealer_koeffizient < user_koeffizient
+    elsif dealer_coefficient < user_coefficient
       getting_bank(@dealer)
       @interface.message_somebody_has_won(@dealer)
-    elsif dealer_koeffizient > user_koeffizient
+    elsif dealer_coefficient > user_coefficient
       getting_bank(@user)
       @interface.message_somebody_has_won(@user)
     end
@@ -206,16 +229,13 @@ class MainProgram
     arr = @deck.getting_whole_deck
     card = arr[rand(arr.size)]
     gamer.add_card(card)
+
     @interface.drawing_on_borderwave
     @interface.mesage_you_drew_the_card
     @interface.drawing_on_new_line
     @deck.draw_card_symbol(card)
     @interface.drawing_on_new_line
     @interface.drawing_on_new_line
-  end
-
-  def check_user_win?
-    @deck.score_calculate(@user.cards) == 21
   end
 
   def check_user_lost?

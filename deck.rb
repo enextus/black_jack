@@ -60,9 +60,6 @@ class Deck
 
     sum = @c_new.sum
 
-    puts "@c_new = #{@c_new}"
-    puts "@c_new.include? 1 = #{@c_new.include? 1}"
-
     if @c_new.include? 1
       sum + 11 <= 21 ? sum + 10 : sum
     else

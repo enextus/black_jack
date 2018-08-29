@@ -47,7 +47,7 @@ class Deck
     when /[ABDE]/
       10
     when '1'
-      @c_new.sum + 11 <= 21 ? 11 : 1
+      1
     end
   end
 
@@ -58,6 +58,7 @@ class Deck
       @c_new[index] = mapping(value[4..4])
     end
 
-    @c_new.sum
+    sum = @c_new.sum
+    sum + 11 <= 21 ? sum + 10 : sum
   end
 end

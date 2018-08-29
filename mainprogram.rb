@@ -133,7 +133,6 @@ class MainProgram
       show_dealer_properties
       @interface.drawing_on_borderwave
 
-
       open_cards if @user.cards.size == 3 && @dealer.cards.size == 3
 
       if check_user_lost?

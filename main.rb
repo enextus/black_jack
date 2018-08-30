@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # black jack game software | a school project
-# main file
 
 # require all required files
 require_relative 'interface'

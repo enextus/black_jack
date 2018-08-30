@@ -157,6 +157,7 @@ class MainProgram
         break
       when 'a'
         gamer_add_card(@user)
+
         if check_user_lost?
           @interface.message_somebody_has_won(@dealer)
           show_user_properties
@@ -180,7 +181,6 @@ class MainProgram
 
   def dealer_move_on
     return start_game! if @deck.score_calculate(@dealer.cards) >= 17
-
     gamer_add_card(@dealer) if @deck.score_calculate(@dealer.cards) < 17
     start_game!
   end
@@ -188,10 +188,6 @@ class MainProgram
   def open_cards
     dealer_coefficient = 21 - @deck.score_calculate(@dealer.cards)
     user_coefficient = 21 - @deck.score_calculate(@user.cards)
-
-
-
-
 
     if dealer_coefficient == user_coefficient
       getting_bank
@@ -228,6 +224,8 @@ class MainProgram
     arr = @deck.getting_whole_deck
     card = arr[rand(arr.size)]
     gamer.add_card(card)
+
+    # @deck.score_calculate_if_ace_allow(card)
 
     @interface.drawing_on_borderwave
     @interface.mesage_you_drew_the_card

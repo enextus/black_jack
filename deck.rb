@@ -52,18 +52,42 @@ class Deck
   end
 
   def score_calculate(cards)
-    @c_new = []
+    case cards.size
+    when 2
+      @c_new = []
 
-    cards.each_with_index do |value, index|
-      @c_new[index] = mapping(value[4..4])
-    end
+      cards.each_with_index do |value, index|
+        @c_new[index] = mapping(value[4..4])
+      end
 
-    sum = @c_new.sum
+      sum = @c_new.sum
 
-    if @c_new.include? 1
-      sum + 11 <= 21 ? sum + 10 : sum
-    else
-      sum
+      if @c_new.include? 1
+        sum + 10 <= 21 ? sum + 10 : sum
+      else
+        sum
+      end
+    when 3
+      two_cards = cards[0..1]
+
+      @c_new = []
+
+      two_cards.each_with_index do |value, index|
+        @c_new[index] = mapping(value[4..4])
+      end
+
+      sum = @c_new.sum
+
+      if @c_new.include? 1
+        two_cards_sum = sum + 10 <= 21 ? sum + 10 : sum
+      else
+        two_cards_sum = sum
+      end
+
+      third_card = cards[2..2]
+      third_card_value = mapping(third_card[0][4..4])
+
+      two_cards_sum + third_card_value
     end
   end
 end

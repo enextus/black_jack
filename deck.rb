@@ -51,7 +51,7 @@ class Deck
     end
   end
 
-  def score_calculate(cards)
+  def _score_calculate(cards)
     case cards.size
     when 2
       @c_new = []
@@ -88,6 +88,22 @@ class Deck
       third_card_value = mapping(third_card[0][4..4])
 
       two_cards_sum + third_card_value
+    end
+  end
+
+  def score_calculate(cards)
+    @c_new = []
+
+    cards.each_with_index do |value, index|
+      @c_new[index] = mapping(value[4..4])
+    end
+
+    sum = @c_new.sum
+
+    if @c_new.include? 1
+      sum + 10 <= 21 ? sum + 10 : sum
+    else
+      sum
     end
   end
 end

@@ -7,17 +7,17 @@ class Interface
   BORDERLINE = '_' * 50
   BORDERWAVE = '~' * 25
   LINE = ''
+  MESSAGES = ['Select the action by entering a number from the list: ',
+              '  1 - Create user & dealer.',
+              '  2 - Show user properties.',
+              '  3 - Show dealer properties.',
+              '  4 - Start game.',
+              BORDERLINE.to_s,
+              'To exit the program, type: exit',
+              BORDERLINE.to_s]
 
   def show_actions
-    messages = ['Select the action by entering a number from the list: ',
-                '  1 - Create user & dealer.',
-                '  2 - Show user properties.',
-                '  3 - Show dealer properties.',
-                '  4 - Start game.',
-                BORDERLINE.to_s,
-                'To exit the program, type: exit',
-                BORDERLINE.to_s]
-    messages.each { |action| puts action }
+    MESSAGES.each { |action| puts action }
   end
 
   def clear_display

@@ -124,32 +124,22 @@ class MainProgram
     @interface.clear_display
 
     loop do
-      @interface.show_a_game_bank_amount(@bank)
-      @interface.drawing_on_borderwave
+      show_a_game_bank_amount
+      show_gamers_properties
 
-      show_user_properties
-      @interface.drawing_on_borderwave
-
-      show_dealer_properties
-      @interface.drawing_on_borderwave
-
-      open_cards if @user.cards.size == 3 && @dealer.cards.size == 3
+      open_cards if three_cards
 
       if check_user_lost?
         @interface.message_somebody_has_won(@dealer)
-        show_user_properties
-        show_dealer_properties
+        show_gamers_properties
         break
       elsif check_dealer_lost?
         @interface.message_somebody_has_won(@user)
-        show_user_properties
-        show_dealer_properties
+        show_gamers_properties
         break
       end
 
-      @interface.message_skip_move
-      @interface.message_add_card if @user.cards.size < 3
-      @interface.message_open_the_cards
+      interface_choices
 
       case @interface.getting_answer
       when 's'
@@ -160,13 +150,11 @@ class MainProgram
 
         if check_user_lost?
           @interface.message_somebody_has_won(@dealer)
-          show_user_properties
-          show_dealer_properties
+          show_gamers_properties
           break
         elsif check_dealer_lost?
           @interface.message_somebody_has_won(@user)
-          show_user_properties
-          show_dealer_properties
+          show_gamers_properties
           break
         end
 
@@ -177,6 +165,29 @@ class MainProgram
         break
       end
     end
+  end
+
+  def show_a_game_bank_amount
+    @interface.show_a_game_bank_amount(@bank)
+    @interface.drawing_on_borderwave
+  end
+
+  def three_cards
+    @user.cards.size == 3 && @dealer.cards.size == 3
+  end
+
+  def interface_choices
+    @interface.message_skip_move
+    @interface.message_add_card if @user.cards.size < 3
+    @interface.message_open_the_cards
+  end
+
+  def show_gamers_properties
+    show_user_properties
+    @interface.drawing_on_borderwave
+
+    show_dealer_properties
+    @interface.drawing_on_borderwave
   end
 
   def dealer_move_on

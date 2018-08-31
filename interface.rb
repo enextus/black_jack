@@ -60,6 +60,14 @@ class Interface
     puts BORDERLINE
   end
 
+  def draw_card_symbol(card)
+    drawing_card(card)
+  end
+
+  def draw_cards_symbols(line)
+    line.each { |card| drawing_card(card) }
+  end
+
   ### message_ ################################################################
 
   def message_user_win
@@ -152,7 +160,7 @@ class Interface
     return if user.cards.empty?
     puts 'User cards:'
     drawing_on_new_line
-    cards.draw_cards_symbols(user.cards)
+    draw_cards_symbols(user.cards)
     puts "User score is now: #{cards.score_calculate(user.cards)}"
   end
 
@@ -165,7 +173,7 @@ class Interface
     drawing_on_new_line
     case show
     when 1
-      cards.draw_cards_symbols(dealer.cards)
+      draw_cards_symbols(dealer.cards)
       puts "Dealer score is now: #{cards.score_calculate(dealer.cards)}"
     else
       puts '* *'

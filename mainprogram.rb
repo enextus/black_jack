@@ -6,7 +6,7 @@ class MainProgram
 
   def initialize(interface)
     @interface = interface
-    @deck = Deck.new(@interface)
+    @deck = Deck.new
   end
 
   def main_loop
@@ -74,7 +74,6 @@ class MainProgram
     @interface.message_user_created(user.name)
   end
 
-  # ####################  2 - show gamers properties  #########################
   def show_gamer_properties(gamer, deck)
     if gamer.nil?
       @interface.message_user_void
@@ -122,7 +121,8 @@ class MainProgram
   end
 
   def start_game!
-    #@interface.clear_display
+    @interface.clear_display
+
     loop do
       @interface.show_a_game_bank_amount(@bank)
       @interface.drawing_on_borderwave
@@ -225,12 +225,10 @@ class MainProgram
     card = arr[rand(arr.size)]
     gamer.add_card(card)
 
-    # @deck.score_calculate_if_ace_allow(card)
-
     @interface.drawing_on_borderwave
     @interface.mesage_you_drew_the_card
     @interface.drawing_on_new_line
-    @deck.draw_card_symbol(card)
+    @interface.draw_card_symbol(card)
     @interface.drawing_on_new_line
     @interface.drawing_on_new_line
   end

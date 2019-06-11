@@ -8,3 +8,4 @@ class Dealer < Person
     super(name)
   end
 end
+ 

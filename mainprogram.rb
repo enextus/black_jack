@@ -17,9 +17,11 @@ class MainProgram
     loop do
       @interface.show_actions
       choice = @interface.getting_choice
-      break if choice == 'exit'
+      break unless choice != 'exit'
+
       @interface.clear_display
       action(choice)
+      binding.spy
     end
   end
 
@@ -67,8 +69,8 @@ class MainProgram
 
       break
     end
-  rescue StandardError => exception
-    @interface.message_error(exception)
+  rescue StandardError => e
+    @interface.message_error(e)
     retry
   else
     @interface.message_user_created(user.name)
@@ -98,7 +100,7 @@ class MainProgram
     end
   end
 
-  # ##########################   4 - run game #################################
+  # 4 - run game ##############################################################
   def start_game
     if @user.nil?
       @interface.message_user_void
@@ -192,6 +194,7 @@ class MainProgram
 
   def dealer_move_on
     return start_game! if @deck.score_calculate(@dealer.cards) >= 17
+
     gamer_add_card(@dealer) if @deck.score_calculate(@dealer.cards) < 17
     start_game!
   end
@@ -253,7 +256,7 @@ class MainProgram
   end
 
   def gamer_getting_cards(gamer)
-    gamer.set_cards(getting_cards)
+    gamer.setting_cards(getting_cards)
   end
 
   def getting_cards

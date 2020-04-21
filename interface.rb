@@ -25,7 +25,6 @@ class Interface
   end
 
   ### getting_ ################################################################
-
   def getting_choice
     gets.chomp.downcase
   end
@@ -43,7 +42,6 @@ class Interface
   end
 
   ### drawing_ ################################################################
-
   def drawing_card(card)
     print [card.hex].pack('U*') + ', '
   end
@@ -69,7 +67,6 @@ class Interface
   end
 
   ### message_ ################################################################
-
   def message_user_win
     puts 'User win!'
   end
@@ -152,12 +149,12 @@ class Interface
   end
 
   ### show_ ###################################################################
-
   def show_user_properties!(user, cards)
     puts "User name: #{user.name}"
     puts "User bank amount: $ #{user.bank}"
 
     return if user.cards.empty?
+
     puts 'User cards:'
     drawing_on_new_line
     draw_cards_symbols(user.cards)
@@ -169,8 +166,10 @@ class Interface
     puts "Dealer bank amount: $ #{dealer.bank}"
 
     return if dealer.cards.empty?
+
     puts 'Dealer cards:'
     drawing_on_new_line
+
     case show
     when 1
       draw_cards_symbols(dealer.cards)

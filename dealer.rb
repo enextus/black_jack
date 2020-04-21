@@ -5,7 +5,6 @@ class Dealer < Person
   attr_reader :name, :cards, :bank
 
   def initialize(name = 'Dealer')
-    super(name)
+    super name
   end
 end
- 

@@ -15,8 +15,8 @@ require_relative 'mainprogram'
 # a class Interface object is created here
 interface = Interface.new
 
-# a class Controller object is created here
+# a class MainProgram object is created here
 mainprogram = MainProgram.new(interface)
 
-# game start
+# game loop
 mainprogram.main_loop

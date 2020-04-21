@@ -4,13 +4,13 @@
 class Person
   attr_reader :name, :cards, :bank
 
-  def initialize(name)
+  def initialize name
     @name = name
     @bank = 100
     @cards = []
   end
 
-  def set_cards(cards)
+  def setting_cards(cards)
     @cards = cards
   end
 

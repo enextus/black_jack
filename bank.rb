@@ -10,7 +10,7 @@ class Bank
     @amount = 0
   end
 
-  def BET
+  def bet
     @amount + BET
   end
 
@@ -28,6 +28,7 @@ class Bank
 
   def make_a_bet(gamer)
     return unless check_amount?(gamer.bank)
-    gamer.sub_bet(BET)
+
+    gamer.sub_bet(bet)
   end
 end

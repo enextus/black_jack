@@ -10,7 +10,7 @@ class User < Person
   attr_reader :name, :cards, :bank
 
   def initialize(name)
-    super(name)
+    super name
     validate!
   end
 end

@@ -21,7 +21,7 @@ class MainProgram
 
       @interface.clear_display
       action(choice)
-      binding.spy
+      binding.pry
     end
   end
 

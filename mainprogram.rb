@@ -21,7 +21,7 @@ class MainProgram
 
       @interface.clear_display
       action(choice)
-      binding.pry
+      # binding.pry
     end
   end
 
@@ -44,7 +44,7 @@ class MainProgram
 
   private
 
-  # ###  1 - create user && dealer 
+  # ###  1 - create user && dealer
   def create_users
     if @user.nil?
       create_users!
@@ -71,6 +71,7 @@ class MainProgram
     end
   rescue StandardError => e
     @interface.message_error(e)
+
     retry
   else
     @interface.message_user_created(user.name)
@@ -134,10 +135,12 @@ class MainProgram
       if check_user_lost?
         @interface.message_somebody_has_won(@dealer)
         show_gamers_properties
+
         break
       elsif check_dealer_lost?
         @interface.message_somebody_has_won(@user)
         show_gamers_properties
+
         break
       end
 
@@ -146,6 +149,7 @@ class MainProgram
       case @interface.getting_answer
       when 's'
         dealer_move_on
+
         break
       when 'a'
         gamer_add_card(@user)
@@ -153,17 +157,21 @@ class MainProgram
         if check_user_lost?
           @interface.message_somebody_has_won(@dealer)
           show_gamers_properties
+
           break
         elsif check_dealer_lost?
           @interface.message_somebody_has_won(@user)
           show_gamers_properties
+
           break
         end
 
         start_game!
+
         break
       when 'o'
         open_cards
+
         break
       end
     end

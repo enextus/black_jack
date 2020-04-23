@@ -65,7 +65,7 @@ class Interface
     line.each { |card| drawing_card(card) }
   end
 
-  ### message_
+  ### message_ ##################################
   def message_user_win
     puts 'User win!'
   end

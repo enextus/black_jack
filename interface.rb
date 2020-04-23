@@ -2,7 +2,6 @@
 
 # class Interface
 class Interface
-  # initialize constants
   CLEAR = `clear`.freeze
   BORDERLINE = '_' * 50
   BORDERWAVE = '~' * 25
@@ -14,7 +13,7 @@ class Interface
               '  4 - Start game.',
               BORDERLINE.to_s,
               'To exit the program, type: exit',
-              BORDERLINE.to_s]
+              BORDERLINE.to_s].freeze
 
   def show_actions
     MESSAGES.each { |action| puts action }
@@ -24,7 +23,7 @@ class Interface
     puts CLEAR
   end
 
-  ### getting_ ################################################################
+  ### getting_ ##################################
   def getting_choice
     gets.chomp.downcase
   end
@@ -41,7 +40,7 @@ class Interface
     gets.downcase.strip
   end
 
-  ### drawing_ ################################################################
+  ### drawing_ ##################################
   def drawing_card(card)
     print [card.hex].pack('U*') + ', '
   end
@@ -66,7 +65,7 @@ class Interface
     line.each { |card| drawing_card(card) }
   end
 
-  ### message_ ################################################################
+  ### message_
   def message_user_win
     puts 'User win!'
   end
@@ -148,7 +147,7 @@ class Interface
     puts 'No dealer exist. Please create one first!'
   end
 
-  ### show_ ###################################################################
+  ### show_ ##################################
   def show_user_properties!(user, cards)
     puts "User name: #{user.name}"
     puts "User bank amount: $ #{user.bank}"

@@ -44,7 +44,7 @@ class MainProgram
 
   private
 
-  # #######################  1 - create user && dealer  #######################
+  # ###  1 - create user && dealer 
   def create_users
     if @user.nil?
       create_users!
@@ -100,7 +100,7 @@ class MainProgram
     end
   end
 
-  # 4 - run game ##############################################################
+  # 4 - run game ##################################
   def start_game
     if @user.nil?
       @interface.message_user_void

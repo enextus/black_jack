@@ -18,5 +18,5 @@ interface = Interface.new
 # a class MainProgram object is created here
 mainprogram = MainProgram.new(interface)
 
-# game loop
+# execute game loop method
 mainprogram.main_loop
